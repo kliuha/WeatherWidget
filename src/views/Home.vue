@@ -1,16 +1,21 @@
 <template>
   <div class="home">
     <h1 >Привіт!</h1>
-    <p>Вкажи місто щоб отримати дані про погоду</p>
+    <p class="p-home">Вкажи місто щоб отримати дані про погоду</p>
         <CityInput />
-          <router-link to="/loading">
+        <div v-if="$store.state.cityname">
+          <router-link to="/weather">
           <input type="button" value="Продовжити" class="btn btn-home">
-        </router-link>
+          </router-link>
+        </div>
+        <div v-else-if="!$store.state.cityname">
+          <input type="button" value="Продовжити" class="btn btn-home" v-on:click="showEmptyInput()">
+        </div>
+
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import CityInput from '@/components/CityInput.vue'
 
 
@@ -21,8 +26,10 @@ export default {
   },
   methods:{
     getCityName(){
-      console.log(this.$store.state.cityname)
       return this.$store.state.cityname
+    },
+    showEmptyInput(){
+      alert('Введіть назву міста')
     }
   }
 }
@@ -36,19 +43,17 @@ export default {
   font-family: Open Sans;
   font-style: normal;
 }
-p{
-font-weight: normal;
-font-size: 22px;
-line-height: 30px;
-/* identical to box height */
-
-text-align: center;
+.p-home{
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 30px;
+  text-align: center;
 }
+
 h1{
   font-weight: bold;
   font-size: 36px;
   line-height: 49px;
-  /* identical to box height */
   color: #222222;
 }
 .btn-home{

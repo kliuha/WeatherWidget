@@ -4,7 +4,8 @@
          list="city-list" @input="inptext.length %2 == 0 ? inputCityName(inptext):'',setCityName(inptext)"
         >
         <template >
-            <datalist id="city-list" class="datalist">
+            <datalist id="city-list" class="datalist" >
+                <option  v-for="cities in forAutoComplete " :key="cities" :value="cities"></option>
             </datalist>
         </template>
         <div v-if="getLoadingState">
@@ -34,28 +35,14 @@ export default{
                 return response.json();
             })
             .then((json) => {
-                console.log(json)
                 this.forAutoComplete= json.list;
-                this.renderOptions()
+                //this.renderOptions()
+                //console.log(this.$store.state.cityname)
             })
         },
-        renderOptions() {
-            for(let item of this.forAutoComplete){
-                    let list = document.querySelector('.datalist')
-                    let option = document.createElement('option');
-                    option.value = item;
-                    list.appendChild(option);
-                }
-    },
-     removeOptions(selectElement) {
-            var i, L = selectElement.options.length - 1;
-            for(i = L; i >= 0; i--) {
-                selectElement.remove(i);
-            }
-    },
-    setCityName(city){
-        this.$store.state.cityname = city;
-    }
+        setCityName(city){
+            this.$store.state.cityname = city;
+        }
     },
     computed:{
         getLoadingState(){
