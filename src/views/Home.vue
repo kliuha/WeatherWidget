@@ -10,6 +10,9 @@
         </div>
         <div v-else-if="!$store.state.cityname">
           <input type="button" value="Продовжити" class="btn btn-home" v-on:click="showEmptyInput()">
+          <transition name="fade">
+              <p class="attention" v-if="show">Будь ласка впишіть назву міста</p>
+          </transition>
         </div>
 
   </div>
@@ -21,6 +24,9 @@ import CityInput from '@/components/CityInput.vue'
 
 export default {
   name: 'Home',
+    data:() =>({
+    show: false
+  }),
   components: {
     CityInput,
   },
@@ -29,7 +35,8 @@ export default {
       return this.$store.state.cityname
     },
     showEmptyInput(){
-      alert('Введіть назву міста')
+      this.show = true;
+      setTimeout(()=>{this.show = false;},2000)
     }
   }
 }
@@ -58,5 +65,19 @@ h1{
 }
 .btn-home{
   margin-top: 8%;
+}
+.attention{
+  color: rgb(180, 21, 21);
+  font-family: Open Sans;
+  font-style: normal;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 30px;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to  {
+  opacity: 0;
 }
 </style>

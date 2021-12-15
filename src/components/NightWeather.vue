@@ -5,7 +5,7 @@
             <div class="night-weather-title">
                 <h3 class="night">{{cityinfo.name}}</h3>
                 <p class="date night">{{getTimeNow()}}</p>
-                <p class="temperature night">{{cityinfo.main.temp}}</p>
+                <p class="temperature night">{{(cityinfo.main.temp - 273).toFixed(1)}}C</p>
                 <p class="decsription">{{cityinfo.weather.description}}</p>
             </div>
             <div class="weather-pict">
@@ -57,6 +57,9 @@
                 </div>
             </div>
         </div>
+        <div class="route-back-night">
+            <router-link  to='/'> Повернутись назад</router-link>
+        </div>
     </div>
 </template>
 
@@ -79,6 +82,10 @@ export default {
                 return response.json();
             })
             .then((json) => {
+                if(parseInt(json.cod) > 400){
+                    this.$router.push({name:'Error'})
+                    throw "Error with request"
+                }
                 this.cityinfo = json;
                 this.sunrise = new Date(this.cityinfo.sys.sunrise*1000);
                 this.sunrise = this.sunrise.getHours() + ':'+ this.sunrise.getMinutes();
@@ -101,7 +108,7 @@ export default {
 }
 .mainday{
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: linear-gradient(329.82deg, #071D65 18.38%, #05174F 81.62%);
 
 }
@@ -140,7 +147,8 @@ export default {
     font-size: 18px;
 }
 .weather-title p,
-.info p{
+.info p,
+.route-back-night{
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;

@@ -1,7 +1,7 @@
 <template>
     <div class="cityinp">
-        <input type="text" placeholder="Наприклад, Копенгаген" v-model.trim="inptext"
-         list="city-list" @input="inptext.length %2 == 0 ? inputCityName(inptext):'',setCityName(inptext)"
+        <input required type="text" placeholder="Наприклад, Копенгаген" v-model.trim="inptext"
+         list="city-list" @input="inptext.length %2 == 0 && inptext.length > 0 ? inputCityName(inptext):'',setCityName(inptext)"
         >
         <template >
             <datalist id="city-list" class="datalist" >
@@ -36,8 +36,6 @@ export default{
             })
             .then((json) => {
                 this.forAutoComplete= json.list;
-                //this.renderOptions()
-                //console.log(this.$store.state.cityname)
             })
         },
         setCityName(city){

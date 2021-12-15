@@ -14,7 +14,9 @@ export default {
   },
   methods:{
       redirect(){
-          this.$router.push({name:'Home'})
+          setTimeout(()=>{
+            this.$router.push({name:'Home'})
+          },1000)
       }
   }
 }

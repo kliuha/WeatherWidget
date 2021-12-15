@@ -1,59 +1,64 @@
 <template>
-    <div class="dayweather">
-        <div class="title-pict">
-        <div class="weather-title">
-            <h3>{{cityinfo.name}}</h3>
-            <p class="date">{{getTimeNow()}}</p>
-            <p class="temperature">{{cityinfo.main.temp}}</p>
-            <p class="decsription">{{cityinfo.weather.description}}</p>
-        </div>
-        <div class="weather-pict">
-            <img src="@/assets/sun.png" alt="" srcset="">
-        </div>
-        </div>
-        <div class="info">
-            <div class="val">
-                <div class="coords flex">
-                <div>
-                    <img src="@/assets/coords.png" alt="" srcset="">
+    <div class="day-conteiner">
+        <div class="dayweather">
+            <div class="title-pict">
+            <div class="weather-title">
+                <h3>{{cityinfo.name}}</h3>
+                <p class="date">{{getTimeNow()}}</p>
+                <p class="temperature">{{(cityinfo.main.temp - 273).toFixed(1)}}C</p>
+                <p class="decsription">{{cityinfo.weather.description}}</p>
+            </div>
+            <div class="weather-pict">
+                <img src="@/assets/sun.png" alt="" srcset="">
+            </div>
+            </div>
+            <div class="info">
+                <div class="val">
+                    <div class="coords flex">
+                    <div>
+                        <img src="@/assets/coords.png" alt="" srcset="">
+                    </div>
+                    <p>Координати</p>
                 </div>
-                <p>Координати</p>
-            </div>
-            <div class="moisture flex">
-                <div>
-                    <img src="@/assets/moisture.png" alt="" srcset="">
+                <div class="moisture flex">
+                    <div>
+                        <img src="@/assets/moisture.png" alt="" srcset="">
+                    </div>
+                    <p>Відносна вологість</p>
                 </div>
-                <p>Відносна вологість</p>
-            </div>
-            <div class="pressure flex">
-                <div>
-                    <img src="@/assets/pressure.png" alt="" srcset="">
+                <div class="pressure flex">
+                    <div>
+                        <img src="@/assets/pressure.png" alt="" srcset="">
+                    </div>
+                    <p>Атмосферний тиск</p>
                 </div>
-                <p>Атмосферний тиск</p>
-            </div>
-            <div class="sunset flex">
-                <div>
-                    <img src="@/assets/sunset.png" alt="" srcset="">
+                <div class="sunset flex">
+                    <div>
+                        <img src="@/assets/sunset.png" alt="" srcset="">
+                    </div>
+                    <p>Час заходу сонця</p>
                 </div>
-                <p>Час заходу сонця</p>
-            </div>
-            <div class="sunrise flex">
-                <div>
-                    <img src="@/assets/sunrise.png" alt="" srcset="">
+                <div class="sunrise flex">
+                    <div>
+                        <img src="@/assets/sunrise.png" alt="" srcset="">
+                    </div>
+                    <p>Час сходу сонця</p>
                 </div>
-                <p>Час сходу сонця</p>
-            </div>
-            </div>
-            <div class="values">
-                <div class="p-flex">
-                <p>Ш: {{cityinfo.coord.lat}}</p>
-                <p>Д: {{cityinfo.coord.lon}}</p>
                 </div>
-                <p>{{cityinfo.main.humidity}}%</p>
-                <p>{{cityinfo.main.pressure}}гПа</p>
-                <p class="mr">{{sunset}}</p>
-                <p class="mr">{{sunrise}}</p>
+                <div class="values">
+                    <div class="p-flex">
+                    <p>Ш: {{cityinfo.coord.lat}}</p>
+                    <p>Д: {{cityinfo.coord.lon}}</p>
+                    </div>
+                    <p>{{cityinfo.main.humidity}}%</p>
+                    <p>{{cityinfo.main.pressure}}гПа</p>
+                    <p class="mr">{{sunset}}</p>
+                    <p class="mr">{{sunrise}}</p>
+                </div>
             </div>
+        </div >
+        <div class="route-back"  @click="clearCity()">
+            <router-link  to='/'> Повернутись назад</router-link>
         </div>
     </div>
 </template>
@@ -79,6 +84,7 @@ export default {
             .then((json) => {
                 if(parseInt(json.cod) > 400){
                     this.$router.push({name:'Error'})
+                    throw "Error with request"
                 }
                 this.cityinfo = json;
                 this.sunrise = new Date(this.cityinfo.sys.sunrise*1000);
@@ -91,19 +97,37 @@ export default {
             let now = new Date()
             now = now.getDate() + '  ' + now.getMonth()
             return now
+        },
+        clearCity(){
+             this.$store.state.cityname = null;
         }
     }
 }
 </script>
 
 <style>
+.route-back{
+font-family: Open Sans;
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+line-height: 25px;
+text-align: center;
+color: #000AFF;
+text-decoration: none;
+
+}
+.day-conteiner{
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(180deg, #72BEFF 0%, #B6E3FF 100%);
+}
 .dayweather{
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
     width: 610px;
     height: 560px;
-
     background: linear-gradient(180deg, #74C5FF 0%, #A4DEFF 100%);
     border: 1px solid rgba(255, 255, 255, 0.14);
     box-sizing: border-box;
